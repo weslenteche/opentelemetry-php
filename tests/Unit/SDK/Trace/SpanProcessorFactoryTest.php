@@ -20,6 +20,13 @@ class SpanProcessorFactoryTest extends TestCase
 {
     use TestState;
 
+    public function test_span_processor_factory_create_noop_processor(): void
+    {
+        $factory = new SpanProcessorFactory();
+        $processor = $factory->create();
+        $this->assertInstanceOf(NoopSpanProcessor::class, $processor);
+    }
+
     /**
      * @psalm-suppress ArgumentTypeCoercion
      */

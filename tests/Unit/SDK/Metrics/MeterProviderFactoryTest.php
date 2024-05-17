@@ -9,6 +9,7 @@ use OpenTelemetry\API\Metrics\MeterInterface;
 use OpenTelemetry\SDK\Common\Configuration\KnownValues;
 use OpenTelemetry\SDK\Common\Configuration\Variables;
 use OpenTelemetry\SDK\Metrics\MeterProviderFactory;
+use OpenTelemetry\SDK\Metrics\NoopMeterProvider;
 use OpenTelemetry\Tests\TestState;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -42,5 +43,12 @@ class MeterProviderFactoryTest extends TestCase
             'none' => [KnownValues::VALUE_NONE],
             'unimplemented' => ['foo'],
         ];
+    }
+
+    public function test_can_be_disabled(): void
+    {
+        $this->setEnvironmentVariable('OTEL_SDK_DISABLED', 'true');
+        $factory = new MeterProviderFactory();
+        $this->assertInstanceOf(NoopMeterProvider::class, $factory->create());
     }
 }
